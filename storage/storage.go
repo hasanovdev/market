@@ -6,6 +6,8 @@ type StorageI interface {
 	Branch() BranchesI
 	Category() CategoriesI
 	Product() ProductsI
+	Remaining() RemainingsI
+	ComingTable() ComingTablesI
 }
 
 type BranchesI interface {
@@ -30,4 +32,16 @@ type ProductsI interface {
 	GetList(req models.GetListProductReq) (resp models.GetListProductResp, err error)
 	Update(req models.Product) (string, error)
 	Delete(req models.ProductIdReq) (string, error)
+}
+
+type RemainingsI interface {
+	Create(req models.CreateRemaining) (resp string, err error)
+}
+
+type ComingTablesI interface {
+	Create(req models.CreateComingTable) (resp string, err error)
+	Get(req models.ComingTableIdReq) (resp models.ComingTableResp, err error)
+	GetList(req models.GetListComingTableReq) (resp models.GetListComingTable, err error)
+	Update(req models.ComingTable) (string, error)
+	Delete(req models.ComingTableIdReq) (string, error)
 }

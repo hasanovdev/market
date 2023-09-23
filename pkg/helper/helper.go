@@ -2,11 +2,20 @@ package helper
 
 import (
 	"database/sql"
+	"fmt"
 	"strconv"
 	"strings"
+	"sync"
+	"time"
 
 	"github.com/google/uuid"
 )
+
+// CustomIDGenerator represents an ID generator with a specific format.
+type CustomIDGenerator struct {
+	prefix string
+	mu     sync.Mutex
+}
 
 func ReplaceQueryParams(namedQuery string, params map[string]interface{}) (string, []interface{}) {
 	var (
@@ -46,4 +55,24 @@ func NewNullString(s string) sql.NullString {
 		String: s,
 		Valid:  true,
 	}
+}
+
+// NewCustomIDGenerator creates a new CustomIDGenerator with default values.
+func NewCustomIDGenerator() *CustomIDGenerator {
+	return &CustomIDGenerator{
+		prefix: "P-",
+	}
+}
+
+// GenerateID generates a unique custom ID using a timestamp and a counter.
+func (gen *CustomIDGenerator) GenerateID() string {
+	gen.mu.Lock()
+	defer gen.mu.Unlock()
+
+	timestamp := time.Now().UnixNano()
+	id := fmt.Sprintf("%s%d", gen.prefix, timestamp)
+
+	id = id[:2] + id[11:]
+
+	return id
 }

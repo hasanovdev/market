@@ -34,6 +34,23 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.ComingTableResp:
+    properties:
+      branch_name:
+        type: string
+      coming_id:
+        type: string
+      created_at:
+        type: string
+      date_time:
+        type: string
+      id:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+    type: object
   models.CreateBranch:
     properties:
       address:
@@ -50,12 +67,34 @@ definitions:
       parent_id:
         type: string
     type: object
+  models.CreateComingTable:
+    properties:
+      branch_id:
+        type: string
+      date_time:
+        type: string
+    type: object
   models.CreateProduct:
     properties:
       barcode:
         type: string
       category_id:
         type: string
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  models.CreateRemaining:
+    properties:
+      barcode:
+        type: string
+      branch_id:
+        type: string
+      category_id:
+        type: string
+      count:
+        type: number
       name:
         type: string
       price:
@@ -92,6 +131,17 @@ definitions:
       name:
         type: string
       parent_id:
+        type: string
+    type: object
+  models.UpdateComingTable:
+    properties:
+      branch_id:
+        type: string
+      date_time:
+        type: string
+      id:
+        type: string
+      status:
         type: string
     type: object
   models.UpdateProduct:
@@ -464,6 +514,188 @@ paths:
       summary: Update an existing category
       tags:
       - categories
+  /coming_tables:
+    get:
+      consumes:
+      - application/json
+      description: get coming_tables
+      parameters:
+      - description: limit for response
+        in: query
+        name: limit
+        type: integer
+      - description: page for response
+        in: query
+        name: page
+        type: integer
+      - description: branch_id for response
+        in: query
+        name: branch_id
+        type: string
+      - description: coming_id for response
+        in: query
+        name: coming_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ComingTableResp'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+      summary: List coming_tables
+      tags:
+      - coming_tables
+    post:
+      consumes:
+      - application/json
+      description: Create a new coming_table with the provided details
+      parameters:
+      - description: data of the coming table
+        in: body
+        name: coming_table
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateComingTable'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+      summary: Create a new coming_table
+      tags:
+      - coming_tables
+  /coming_tables/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete a coming_table by its unique identifier
+      parameters:
+      - description: Coming table ID to retrieve
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+      summary: Delete a coming_table
+      tags:
+      - coming_tables
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a coming_table by its unique identifier
+      parameters:
+      - description: Coming table ID to retrieve
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ComingTableResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+      summary: Get a brancoming_tablech by ID
+      tags:
+      - coming_tables
+    put:
+      consumes:
+      - application/json
+      description: Update an existing coming_table with the provided details
+      parameters:
+      - description: Coming table ID to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update data for the coming table
+        in: body
+        name: coming_table
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateComingTable'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+      summary: Update an existing coming_table
+      tags:
+      - coming_tables
   /products:
     get:
       consumes:
@@ -646,6 +878,40 @@ paths:
       summary: Update an existing product
       tags:
       - products
+  /remainings:
+    post:
+      consumes:
+      - application/json
+      description: Create a new remaining with the provided details
+      parameters:
+      - description: data of the remaining product
+        in: body
+        name: remaining
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateRemaining'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+      summary: Create a new remaining
+      tags:
+      - remainings
 securityDefinitions:
   ApiKeyAuth:
     in: header

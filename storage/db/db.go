@@ -10,10 +10,12 @@ import (
 )
 
 type store struct {
-	db         *pgxpool.Pool
-	branches   *branchRepo
-	categories *categoryRepo
-	products   *productRepo
+	db           *pgxpool.Pool
+	branches     *branchRepo
+	categories   *categoryRepo
+	products     *productRepo
+	remainings   *remainingRepo
+	comingTables *comingTableRepo
 }
 
 func NewStorage(ctx context.Context, cfg config.Config) (storage.StorageI, error) {
@@ -65,4 +67,20 @@ func (s *store) Product() storage.ProductsI {
 	}
 
 	return s.products
+}
+
+func (s *store) Remaining() storage.RemainingsI {
+	if s.remainings == nil {
+		s.remainings = NewRemainingRepo(s.db)
+	}
+
+	return s.remainings
+}
+
+func (s *store) ComingTable() storage.ComingTablesI {
+	if s.comingTables == nil {
+		s.comingTables = NewComingTableRepo(s.db)
+	}
+
+	return s.comingTables
 }

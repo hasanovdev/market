@@ -38,6 +38,16 @@ func NewServer(h *handler.Handler) *gin.Engine {
 	product.PUT("/:id", h.UpdateProduct)
 	product.DELETE("/:id", h.DeleteProduct)
 
+	remaining := r.Group("/remainings")
+	remaining.POST("/", h.CreateRemaining)
+
+	comingTable := r.Group("/coming_tables")
+	comingTable.POST("/", h.CreateComingTable)
+	comingTable.GET("/:id", h.GetComingTable)
+	comingTable.GET("/", h.GetListComingTable)
+	comingTable.PUT("/:id", h.UpdateComingTable)
+	comingTable.DELETE("/:id", h.DeleteComingTable)
+
 	url := ginSwagger.URL("swagger/doc.json")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
