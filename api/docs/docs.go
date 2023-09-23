@@ -553,6 +553,281 @@ const docTemplate = `{
                 }
             }
         },
+        "/coming_table_products": {
+            "get": {
+                "description": "get coming_table_products",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coming_table_products"
+                ],
+                "summary": "List coming_table_products",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "limit for response",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "page for response",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "category_id for response",
+                        "name": "category_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "barcode for response",
+                        "name": "barcode",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.ComingTableProductResp"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new coming_table_product with the provided details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coming_table_products"
+                ],
+                "summary": "Create a new coming_table_product",
+                "parameters": [
+                    {
+                        "description": "data of the coming table product",
+                        "name": "coming_table_product",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CreateComingTableProduct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    }
+                }
+            }
+        },
+        "/coming_table_products/{id}": {
+            "get": {
+                "description": "Retrieve a coming_table_product by its unique identifier",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coming_table_products"
+                ],
+                "summary": "Get a oming_table_product by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Coming table product ID to retrieve",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.ComingTableProductResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update an existing coming_table_product with the provided details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coming_table_products"
+                ],
+                "summary": "Update an existing coming_table_product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Coming table product ID to update",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update data for the coming table product",
+                        "name": "coming_table",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateComingTableProduct"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "delete a coming_table_product by its unique identifier",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coming_table_products"
+                ],
+                "summary": "Delete a coming_table_product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Coming table product ID to retrieve",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    }
+                }
+            }
+        },
         "/coming_tables": {
             "get": {
                 "description": "get coming_tables",
@@ -685,7 +960,7 @@ const docTemplate = `{
                 "tags": [
                     "coming_tables"
                 ],
-                "summary": "Get a brancoming_tablech by ID",
+                "summary": "Get a coming_table by ID",
                 "parameters": [
                     {
                         "type": "string",
@@ -1211,6 +1486,41 @@ const docTemplate = `{
                 }
             }
         },
+        "models.ComingTableProductResp": {
+            "type": "object",
+            "properties": {
+                "barcode": {
+                    "type": "string"
+                },
+                "category_name": {
+                    "type": "string"
+                },
+                "coming_table_id": {
+                    "type": "string"
+                },
+                "count": {
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "total_price": {
+                    "type": "number"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "models.ComingTableResp": {
             "type": "object",
             "properties": {
@@ -1270,6 +1580,29 @@ const docTemplate = `{
                 },
                 "date_time": {
                     "type": "string"
+                }
+            }
+        },
+        "models.CreateComingTableProduct": {
+            "type": "object",
+            "properties": {
+                "barcode": {
+                    "type": "string"
+                },
+                "category_id": {
+                    "type": "string"
+                },
+                "coming_table_id": {
+                    "type": "string"
+                },
+                "count": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
                 }
             }
         },
@@ -1378,6 +1711,29 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "string"
+                }
+            }
+        },
+        "models.UpdateComingTableProduct": {
+            "type": "object",
+            "properties": {
+                "barcode": {
+                    "type": "string"
+                },
+                "category_id": {
+                    "type": "string"
+                },
+                "coming_table_id": {
+                    "type": "string"
+                },
+                "count": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
                 }
             }
         },

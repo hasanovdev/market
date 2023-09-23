@@ -45,7 +45,7 @@ func (h *Handler) CreateComingTable(c *gin.Context) {
 
 // GetComingTable godoc
 // @Router       /coming_tables/{id} [get]
-// @Summary      Get a brancoming_tablech by ID
+// @Summary      Get a coming_table by ID
 // @Description  Retrieve a coming_table by its unique identifier
 // @Tags         coming_tables
 // @Accept       json

@@ -8,6 +8,7 @@ type StorageI interface {
 	Product() ProductsI
 	Remaining() RemainingsI
 	ComingTable() ComingTablesI
+	ComingTableProduct() ComingTableProductsI
 }
 
 type BranchesI interface {
@@ -34,14 +35,22 @@ type ProductsI interface {
 	Delete(req models.ProductIdReq) (string, error)
 }
 
-type RemainingsI interface {
-	Create(req models.CreateRemaining) (resp string, err error)
-}
-
 type ComingTablesI interface {
 	Create(req models.CreateComingTable) (resp string, err error)
 	Get(req models.ComingTableIdReq) (resp models.ComingTableResp, err error)
 	GetList(req models.GetListComingTableReq) (resp models.GetListComingTable, err error)
 	Update(req models.ComingTable) (string, error)
 	Delete(req models.ComingTableIdReq) (string, error)
+}
+
+type ComingTableProductsI interface {
+	Create(req models.CreateComingTableProduct) (resp string, err error)
+	Get(req models.ComingTableProductIdReq) (resp models.ComingTableProductResp, err error)
+	GetList(req models.GetListComingTableProductReq) (resp models.GetListComingTableProduct, err error)
+	Update(req models.ComingTableProduct) (string, error)
+	Delete(req models.ComingTableProductIdReq) (string, error)
+}
+
+type RemainingsI interface {
+	Create(req models.CreateRemaining) (resp string, err error)
 }

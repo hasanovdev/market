@@ -10,12 +10,13 @@ import (
 )
 
 type store struct {
-	db           *pgxpool.Pool
-	branches     *branchRepo
-	categories   *categoryRepo
-	products     *productRepo
-	remainings   *remainingRepo
-	comingTables *comingTableRepo
+	db                  *pgxpool.Pool
+	branches            *branchRepo
+	categories          *categoryRepo
+	products            *productRepo
+	remainings          *remainingRepo
+	comingTables        *comingTableRepo
+	comingTableProducts *comingTableProductRepo
 }
 
 func NewStorage(ctx context.Context, cfg config.Config) (storage.StorageI, error) {
@@ -83,4 +84,12 @@ func (s *store) ComingTable() storage.ComingTablesI {
 	}
 
 	return s.comingTables
+}
+
+func (s *store) ComingTableProduct() storage.ComingTableProductsI {
+	if s.comingTableProducts == nil {
+		s.comingTableProducts = NewComingTableProductRepo(s.db)
+	}
+
+	return s.comingTableProducts
 }
