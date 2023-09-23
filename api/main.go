@@ -38,9 +38,6 @@ func NewServer(h *handler.Handler) *gin.Engine {
 	product.PUT("/:id", h.UpdateProduct)
 	product.DELETE("/:id", h.DeleteProduct)
 
-	remaining := r.Group("/remainings")
-	remaining.POST("/", h.CreateRemaining)
-
 	comingTable := r.Group("/coming_tables")
 	comingTable.POST("/", h.CreateComingTable)
 	comingTable.GET("/:id", h.GetComingTable)
@@ -54,6 +51,13 @@ func NewServer(h *handler.Handler) *gin.Engine {
 	comingTableProduct.GET("/", h.GetListComingTableProduct)
 	comingTableProduct.PUT("/:id", h.UpdateComingTableProduct)
 	comingTableProduct.DELETE("/:id", h.DeleteComingTableProduct)
+
+	remaining := r.Group("/remainings")
+	remaining.POST("/", h.CreateRemaining)
+	remaining.GET("/:id", h.GetRemaining)
+	remaining.GET("/", h.GetListRemaining)
+	remaining.PUT("/:id", h.UpdateRemaining)
+	remaining.DELETE("/:id", h.DeleteRemaining)
 
 	url := ginSwagger.URL("swagger/doc.json")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

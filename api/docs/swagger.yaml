@@ -155,6 +155,29 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.RemainingResp:
+    properties:
+      barcode:
+        type: string
+      branch_name:
+        type: string
+      category_name:
+        type: string
+      count:
+        type: number
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      total_price:
+        type: number
+      updated_at:
+        type: string
+    type: object
   models.UpdateBranch:
     properties:
       address:
@@ -203,6 +226,21 @@ definitions:
         type: string
       category_id:
         type: string
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  models.UpdateRemaining:
+    properties:
+      barcode:
+        type: string
+      branch_id:
+        type: string
+      category_id:
+        type: string
+      count:
+        type: number
       name:
         type: string
       price:
@@ -1114,6 +1152,55 @@ paths:
       tags:
       - products
   /remainings:
+    get:
+      consumes:
+      - application/json
+      description: get remainings
+      parameters:
+      - description: limit for response
+        in: query
+        name: limit
+        type: integer
+      - description: page for response
+        in: query
+        name: page
+        type: integer
+      - description: search by branch_id
+        in: query
+        name: branch_id
+        type: string
+      - description: search by category_id
+        in: query
+        name: category_id
+        type: string
+      - description: search by barcode
+        in: query
+        name: barcode
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.RemainingResp'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+      summary: List remainings
+      tags:
+      - remainings
     post:
       consumes:
       - application/json
@@ -1145,6 +1232,109 @@ paths:
           schema:
             $ref: '#/definitions/http.ErrorResp'
       summary: Create a new remaining
+      tags:
+      - remainings
+  /remainings/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete a remaining by its unique identifier
+      parameters:
+      - description: Remaining ID to retrieve
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+      summary: Delete a remaining
+      tags:
+      - remainings
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a reamining by its unique identifier
+      parameters:
+      - description: Remaining ID to retrieve
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RemainingResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+      summary: Get a reamining by ID
+      tags:
+      - remainings
+    put:
+      consumes:
+      - application/json
+      description: Update an existing remaining with the provided details
+      parameters:
+      - description: Remaining ID to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update data for the remaining product
+        in: body
+        name: remaining
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateRemaining'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http.ErrorResp'
+      summary: Update an existing remaining
       tags:
       - remainings
 securityDefinitions:

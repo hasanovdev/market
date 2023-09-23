@@ -53,4 +53,8 @@ type ComingTableProductsI interface {
 
 type RemainingsI interface {
 	Create(req models.CreateRemaining) (resp string, err error)
+	Get(req models.RemainingIdReq) (resp models.RemainingResp, err error)
+	GetList(req models.GetListRemainingReq) (resp models.GetListRemainingResp, err error)
+	Update(req models.Remaining) (string, error)
+	Delete(req models.RemainingIdReq) (string, error)
 }
