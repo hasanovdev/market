@@ -28,7 +28,9 @@ type RemainingIdReq struct {
 
 type RemainingResp struct {
 	Id           string  `json:"id"`
+	BranchId     string  `json:"branch_id"`
 	BranchName   string  `json:"branch_name"`
+	CategoryId   string  `json:"category_id"`
 	CategoryName string  `json:"category_name"`
 	Name         string  `json:"name"`
 	Price        float64 `json:"price"`

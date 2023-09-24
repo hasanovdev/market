@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"market/models"
 	"market/pkg/helper"
 	"market/pkg/logger"
@@ -264,6 +265,101 @@ func (h *Handler) ScanBarcode(c *gin.Context) {
 				return
 			}
 		}
+
+	} else {
+		c.JSON(http.StatusOK, "Coming Table already finished")
+		h.log.Warn("coming table already finished")
+		return
+	}
+}
+
+// ScanBarcode godoc
+// @Router       /coming_tables/do-income/{coming_table_id} [get]
+// @Summary      Do Income Coming table to Remainings
+// @Description  Do Income Coming table to Remainings
+// @Tags         coming_tables
+// @Accept       json
+// @Produce      json
+// @Param        coming_table_id   path    string     true    "Coming table ID to retrieve"
+// @Success      200  {string}  string
+// @Failure      400  {object}  http.ErrorResp
+// @Failure      404  {object}  http.ErrorResp
+// @Failure      500  {object}  http.ErrorResp
+func (h *Handler) DoIncome(c *gin.Context) {
+	comingTableId := c.Param("coming_table_id")
+
+	comingTable, err := h.strg.ComingTable().Get(models.ComingTableIdReq{Id: comingTableId})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "internal server error")
+		h.log.Error("error get coming table:", logger.Error(err))
+		return
+	}
+
+	if comingTable.Status == "in_process" {
+		comingTableProductResp, err := h.strg.ComingTableProduct().GetList(models.GetListComingTableProductReq{
+			ComingTableId: comingTableId,
+		})
+
+		if err != nil {
+			h.log.Error("error ComingTableProduct GetList:", logger.Error(err))
+			c.JSON(http.StatusInternalServerError, "internal server error")
+			return
+		}
+
+		for _, v := range comingTableProductResp.ComingTableProducts {
+			exists, id, remCount := h.strg.Remaining().CheckProductExists(v.Barcode)
+			fmt.Println(exists, id, remCount)
+			if exists {
+				_, err := h.strg.Remaining().Update(models.Remaining{
+					Id:         id,
+					BranchId:   comingTable.BranchId,
+					CategoryId: v.CategoryId,
+					Name:       v.Name,
+					Price:      v.Price,
+					Barcode:    v.Barcode,
+					Count:      v.Count + remCount,
+				})
+
+				if err != nil {
+					h.log.Error("error update remaining product:", logger.Error(err))
+					c.JSON(http.StatusInternalServerError, "internal server error")
+					return
+				}
+
+			} else {
+				_, err := h.strg.Remaining().Create(models.CreateRemaining{
+					BranchId:   comingTable.BranchId,
+					CategoryId: v.CategoryId,
+					Name:       v.Name,
+					Price:      v.Price,
+					Barcode:    v.Barcode,
+					Count:      v.Count,
+				})
+
+				if err != nil {
+					h.log.Error("error remaining create:", logger.Error(err))
+					c.JSON(http.StatusInternalServerError, "internal server error")
+					return
+				}
+			}
+		}
+
+		_, err = h.strg.ComingTable().Update(models.ComingTable{
+			Id:       comingTableId,
+			BranchId: comingTable.BranchId,
+			DateTime: comingTable.DateTime,
+			Status:   "finished",
+		})
+
+		if err != nil {
+			h.log.Error("error update coming table:", logger.Error(err))
+			c.JSON(http.StatusInternalServerError, "internal server error")
+			return
+		}
+
+		h.log.Info("done")
+		c.JSON(http.StatusOK, "done")
+		return
 
 	} else {
 		c.JSON(http.StatusOK, "Coming Table already finished")

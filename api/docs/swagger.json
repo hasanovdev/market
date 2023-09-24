@@ -937,6 +937,56 @@
                 }
             }
         },
+        "/coming_tables/do-income/{coming_table_id}": {
+            "get": {
+                "description": "Do Income Coming table to Remainings",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coming_tables"
+                ],
+                "summary": "Do Income Coming table to Remainings",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Coming table ID to retrieve",
+                        "name": "coming_table_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    }
+                }
+            }
+        },
         "/coming_tables/scan-barcode/{coming_table_id}": {
             "get": {
                 "description": "Scan barcode and create or update coming table products",
@@ -1962,7 +2012,13 @@
                 "barcode": {
                     "type": "string"
                 },
+                "branch_id": {
+                    "type": "string"
+                },
                 "branch_name": {
+                    "type": "string"
+                },
+                "category_id": {
                     "type": "string"
                 },
                 "category_name": {

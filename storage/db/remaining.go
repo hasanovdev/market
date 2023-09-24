@@ -103,7 +103,9 @@ func (r *remainingRepo) GetList(req models.GetListRemainingReq) (resp models.Get
 	s := `
 	SELECT 
 		r.id,
+		r.branch_id,
 		br.name,
+		r.category_id,
 		ct.name,
 		r.name,
 		r.price,
@@ -151,7 +153,9 @@ func (r *remainingRepo) GetList(req models.GetListRemainingReq) (resp models.Get
 		var remaining models.RemainingResp
 		err := rows.Scan(
 			&remaining.Id,
+			&remaining.BranchId,
 			&remaining.BranchName,
+			&remaining.CategoryId,
 			&remaining.CategoryName,
 			&remaining.Name,
 			&remaining.Price,
@@ -222,16 +226,25 @@ func (r *remainingRepo) Delete(req models.RemainingIdReq) (string, error) {
 	return "OK", nil
 }
 
-func (r *remainingRepo) CheckProductExists(barcode string) bool {
-	var count int
+func (r *remainingRepo) CheckProductExists(barcode string) (bool, string, float64) {
+	var (
+		count    int
+		id       string
+		remCount float64
+	)
 	query := `
 	SELECT 
-		COUNT(*) 
+		id,
+		count,
+		COUNT(*)
 	FROM remainings
-	WHERE barcode=$1;
+	WHERE barcode=$1 GROUP BY id;
 	`
 
-	_ = r.db.QueryRow(context.Background(), query, barcode).Scan(&count)
+	err := r.db.QueryRow(context.Background(), query, barcode).Scan(&id, &remCount, &count)
+	if err != nil {
+		return false, "", 0
+	}
 
-	return count > 0
+	return count > 0, id, remCount
 }

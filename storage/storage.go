@@ -57,5 +57,5 @@ type RemainingsI interface {
 	GetList(req models.GetListRemainingReq) (resp models.GetListRemainingResp, err error)
 	Update(req models.Remaining) (string, error)
 	Delete(req models.RemainingIdReq) (string, error)
-	CheckProductExists(barcode string) (resp bool)
+	CheckProductExists(barcode string) (bool, string, float64)
 }

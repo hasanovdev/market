@@ -45,6 +45,7 @@ func NewServer(h *handler.Handler) *gin.Engine {
 	comingTable.PUT("/:id", h.UpdateComingTable)
 	comingTable.DELETE("/:id", h.DeleteComingTable)
 	comingTable.GET("/scan-barcode/:coming_table_id", h.ScanBarcode)
+	comingTable.GET("/do-income/:coming_table_id", h.DoIncome)
 
 	comingTableProduct := r.Group("/coming_table_products")
 	comingTableProduct.POST("/", h.CreateComingTableProduct)
