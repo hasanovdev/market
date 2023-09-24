@@ -193,3 +193,15 @@ func (p *productRepo) Delete(req models.ProductIdReq) (string, error) {
 
 	return "OK", nil
 }
+
+func (p *productRepo) GetCategoryId(barcode string) (resp string, err error) {
+	query := `
+	SELECT category_id FROM products WHERE barcode=$1;
+	`
+
+	if err = p.db.QueryRow(context.Background(), query, barcode).Scan(&resp); err != nil {
+		return
+	}
+
+	return
+}

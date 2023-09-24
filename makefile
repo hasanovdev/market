@@ -4,5 +4,5 @@ run:
 swag:
 	@swag init -g api/main.go -o api/docs
 
-migrateup:
+migrate_up:
 	@migrate -database postgres://postgres:password@localhost:5432/market\?sslmode\=disable -path migrations up

@@ -180,3 +180,100 @@ func (h *Handler) DeleteComingTable(c *gin.Context) {
 	h.log.Warn("response to DeleteComingTable")
 	c.JSON(http.StatusOK, resp)
 }
+
+// ScanBarcode godoc
+// @Router       /coming_tables/scan-barcode/{id} [get]
+// @Summary      Scan barcode product
+// @Description  Scan barcode and create or update coming table products
+// @Tags         coming_tables
+// @Accept       json
+// @Produce      json
+// @Param        id   path    string     true    "Coming table ID to retrieve"
+// @Param        barcode   query    string     true    "Product barcode to retrieve"
+// @Success      200  {string}  string
+// @Failure      400  {object}  http.ErrorResp
+// @Failure      404  {object}  http.ErrorResp
+// @Failure      500  {object}  http.ErrorResp
+func (h *Handler) ScanBarcode(c *gin.Context) {
+	comingTableId := c.Param("id")
+	if !helper.IsValidUUID(comingTableId) {
+		h.log.Error("error ComingTable id:", logger.Error(errors.New("invalid id")))
+		c.JSON(http.StatusBadRequest, "invalid id")
+		return
+	}
+
+	comingTable, err := h.strg.ComingTable().Get(models.ComingTableIdReq{Id: comingTableId})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, "internal server error")
+		h.log.Error("error get coming table:", logger.Error(err))
+		return
+	}
+
+	if comingTable.Status == "in_process" {
+		barcode := c.Query("barcode")
+		products, err := h.strg.Product().GetList(models.GetListProductReq{Barcode: barcode})
+		if err != nil {
+			h.log.Error("error Product GetList:", logger.Error(err))
+			c.JSON(http.StatusInternalServerError, "internal server error")
+			return
+		}
+
+		if products.Count == 0 {
+			h.log.Error("error product not found")
+			c.JSON(http.StatusNotFound, "product not found")
+			return
+		} else {
+			ctProducts, err := h.strg.ComingTableProduct().GetList(models.GetListComingTableProductReq{Barcode: barcode})
+			if err != nil {
+				h.log.Error("error ComingTableProduct GetList:", logger.Error(err))
+				c.JSON(http.StatusInternalServerError, "internal server error")
+				return
+			}
+
+			categoryId, err := h.strg.Product().GetCategoryId(barcode)
+			if err != nil {
+				h.log.Error("error ComingTableProduct GetCategoryId:", logger.Error(err))
+				c.JSON(http.StatusInternalServerError, "internal server error")
+				return
+			}
+			if ctProducts.Count == 0 {
+				h.strg.ComingTableProduct().Create(models.CreateComingTableProduct{
+					CategoryId:    categoryId,
+					Name:          products.Products[0].Name,
+					Price:         products.Products[0].Price,
+					Barcode:       products.Products[0].Barcode,
+					Count:         1,
+					ComingTableId: comingTableId,
+				})
+				c.JSON(http.StatusOK, "Coming table product created")
+				h.log.Info("coming table product created")
+				return
+
+			} else {
+				_, err = h.strg.ComingTableProduct().Update(models.ComingTableProduct{
+					Id:            ctProducts.ComingTableProducts[0].Id,
+					CategoryId:    categoryId,
+					Name:          products.Products[0].Name,
+					Price:         products.Products[0].Price,
+					Barcode:       products.Products[0].Barcode,
+					Count:         float64(ctProducts.ComingTableProducts[0].Count) + 1,
+					TotalPrice:    products.Products[0].Price * (float64(ctProducts.Count) + 1),
+					ComingTableId: comingTableId,
+				})
+				if err != nil {
+					c.JSON(http.StatusInternalServerError, "error while update")
+					h.log.Error("error update coming table product", logger.Error(err))
+					return
+				}
+				c.JSON(http.StatusOK, "Coming table product updated")
+				h.log.Info("coming table products updated")
+				return
+			}
+		}
+
+	} else {
+		c.JSON(http.StatusOK, "Coming Table already finished")
+		h.log.Info("coming table already finished")
+		return
+	}
+}

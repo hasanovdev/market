@@ -948,6 +948,63 @@ const docTemplate = `{
                 }
             }
         },
+        "/coming_tables/scan-barcode/{id}": {
+            "get": {
+                "description": "Scan barcode and create or update coming table products",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "coming_tables"
+                ],
+                "summary": "Scan barcode product",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Coming table ID to retrieve",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Product barcode to retrieve",
+                        "name": "barcode",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/http.ErrorResp"
+                        }
+                    }
+                }
+            }
+        },
         "/coming_tables/{id}": {
             "get": {
                 "description": "Retrieve a coming_table by its unique identifier",
