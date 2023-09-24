@@ -6,9 +6,9 @@ type StorageI interface {
 	Branch() BranchesI
 	Category() CategoriesI
 	Product() ProductsI
-	Remaining() RemainingsI
 	ComingTable() ComingTablesI
 	ComingTableProduct() ComingTableProductsI
+	Remaining() RemainingsI
 }
 
 type BranchesI interface {

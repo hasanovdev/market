@@ -39,7 +39,7 @@ func (b *branchRepo) Create(req models.CreateBranch) (resp string, err error) {
 	)
 
 	if err != nil {
-		return
+		return "", err
 	}
 
 	return id, nil
