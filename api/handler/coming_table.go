@@ -230,15 +230,9 @@ func (h *Handler) ScanBarcode(c *gin.Context) {
 				return
 			}
 
-			categoryId, err := h.strg.Product().GetCategoryId(barcode)
-			if err != nil {
-				h.log.Error("error ComingTableProduct GetCategoryId:", logger.Error(err))
-				c.JSON(http.StatusInternalServerError, "internal server error")
-				return
-			}
 			if ctProducts.Count == 0 {
 				h.strg.ComingTableProduct().Create(models.CreateComingTableProduct{
-					CategoryId:    categoryId,
+					CategoryId:    products.Products[0].CategoryId,
 					Name:          products.Products[0].Name,
 					Price:         products.Products[0].Price,
 					Barcode:       products.Products[0].Barcode,
@@ -252,7 +246,7 @@ func (h *Handler) ScanBarcode(c *gin.Context) {
 			} else {
 				_, err = h.strg.ComingTableProduct().Update(models.ComingTableProduct{
 					Id:            ctProducts.ComingTableProducts[0].Id,
-					CategoryId:    categoryId,
+					CategoryId:    products.Products[0].CategoryId,
 					Name:          products.Products[0].Name,
 					Price:         products.Products[0].Price,
 					Barcode:       products.Products[0].Barcode,

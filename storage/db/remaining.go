@@ -221,3 +221,17 @@ func (r *remainingRepo) Delete(req models.RemainingIdReq) (string, error) {
 
 	return "OK", nil
 }
+
+func (r *remainingRepo) CheckProductExists(barcode string) bool {
+	var count int
+	query := `
+	SELECT 
+		COUNT(*) 
+	FROM remainings
+	WHERE barcode=$1;
+	`
+
+	_ = r.db.QueryRow(context.Background(), query, barcode).Scan(&count)
+
+	return count > 0
+}

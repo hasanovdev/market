@@ -54,6 +54,7 @@ func (p *productRepo) Get(req models.ProductIdReq) (resp models.ProductResp, err
 		p.name,
 		p.price,
 		p.barcode,
+		p.category_id,
 		c.name, 
 		p.created_at::TEXT,
 		p.updated_at::TEXT
@@ -68,6 +69,7 @@ func (p *productRepo) Get(req models.ProductIdReq) (resp models.ProductResp, err
 		&product.Name,
 		&product.Price,
 		&product.Barcode,
+		&product.CategoryId,
 		&product.CategoryName,
 		&product.CreatedAt,
 		&product.UpdatedAt,
@@ -93,6 +95,7 @@ func (p *productRepo) GetList(req models.GetListProductReq) (resp models.GetList
 		p.name,
 		p.price,
 		p.barcode,
+		p.category_id,
 		c.name, 
 		p.created_at::TEXT,
 		p.updated_at::TEXT
@@ -135,6 +138,7 @@ func (p *productRepo) GetList(req models.GetListProductReq) (resp models.GetList
 			&product.Name,
 			&product.Price,
 			&product.Barcode,
+			&product.CategoryId,
 			&product.CategoryName,
 			&product.CreatedAt,
 			&product.UpdatedAt,
@@ -192,16 +196,4 @@ func (p *productRepo) Delete(req models.ProductIdReq) (string, error) {
 	}
 
 	return "OK", nil
-}
-
-func (p *productRepo) GetCategoryId(barcode string) (resp string, err error) {
-	query := `
-	SELECT category_id FROM products WHERE barcode=$1;
-	`
-
-	if err = p.db.QueryRow(context.Background(), query, barcode).Scan(&resp); err != nil {
-		return
-	}
-
-	return
 }

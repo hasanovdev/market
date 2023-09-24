@@ -1778,6 +1778,9 @@ const docTemplate = `{
                 "barcode": {
                     "type": "string"
                 },
+                "category_id": {
+                    "type": "string"
+                },
                 "category_name": {
                     "type": "string"
                 },
@@ -1810,6 +1813,9 @@ const docTemplate = `{
         "models.ComingTableResp": {
             "type": "object",
             "properties": {
+                "branch_id": {
+                    "type": "string"
+                },
                 "branch_name": {
                     "type": "string"
                 },
@@ -1936,6 +1942,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "barcode": {
+                    "type": "string"
+                },
+                "category_id": {
                     "type": "string"
                 },
                 "category_name": {

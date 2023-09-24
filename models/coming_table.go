@@ -22,6 +22,7 @@ type ComingTableIdReq struct {
 type ComingTableResp struct {
 	Id         string `json:"id"`
 	ComingId   string `json:"coming_id"`
+	BranchId   string `json:"branch_id"`
 	BranchName string `json:"branch_name"`
 	DateTime   string `json:"date_time"`
 	Status     string `json:"status"`

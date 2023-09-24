@@ -51,6 +51,7 @@ func (c *comingTableRepo) Get(req models.ComingTableIdReq) (resp models.ComingTa
 	SELECT 
         ct.id,
         ct.coming_id,
+		ct.branch_id,
         br.name,
         ct.date_time::TEXT,
         ct.status,
@@ -65,6 +66,7 @@ func (c *comingTableRepo) Get(req models.ComingTableIdReq) (resp models.ComingTa
 	if err = c.db.QueryRow(context.Background(), query, req.Id).Scan(
 		&comingTable.Id,
 		&comingTable.ComingId,
+		&comingTable.BranchId,
 		&comingTable.BranchName,
 		&comingTable.DateTime,
 		&comingTable.Status,
@@ -90,6 +92,7 @@ func (c *comingTableRepo) GetList(req models.GetListComingTableReq) (resp models
 	SELECT 
 		ct.id,
 		ct.coming_id,
+		ct.branch_id,
 		br.name,
 		ct.date_time::TEXT,
 		ct.status,
@@ -131,6 +134,7 @@ func (c *comingTableRepo) GetList(req models.GetListComingTableReq) (resp models
 		err := rows.Scan(
 			&comingTable.Id,
 			&comingTable.ComingId,
+			&comingTable.BranchId,
 			&comingTable.BranchName,
 			&comingTable.DateTime,
 			&comingTable.Status,

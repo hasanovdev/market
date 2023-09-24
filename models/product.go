@@ -26,6 +26,7 @@ type ProductResp struct {
 	Name         string  `json:"name"`
 	Price        float64 `json:"price"`
 	Barcode      string  `json:"barcode"`
+	CategoryId   string  `json:"category_id"`
 	CategoryName string  `json:"category_name"`
 	CreatedAt    string  `json:"created_at"`
 	UpdatedAt    string  `json:"updated_at"`

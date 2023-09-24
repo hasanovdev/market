@@ -28,6 +28,7 @@ type ComingTableProductIdReq struct {
 
 type ComingTableProductResp struct {
 	Id            string  `json:"id"`
+	CategoryId    string  `json:"category_id"`
 	CategoryName  string  `json:"category_name"`
 	Name          string  `json:"name"`
 	Price         float64 `json:"price"`
@@ -40,10 +41,11 @@ type ComingTableProductResp struct {
 }
 
 type GetListComingTableProductReq struct {
-	Page       int    `json:"page"`
-	Limit      int    `json:"limit"`
-	CategoryId string `json:"category_id"`
-	Barcode    string `json:"barcode"`
+	Page          int    `json:"page"`
+	Limit         int    `json:"limit"`
+	CategoryId    string `json:"category_id"`
+	Barcode       string `json:"barcode"`
+	ComingTableId string `json:"coming_table_id"`
 }
 
 type GetListComingTableProduct struct {

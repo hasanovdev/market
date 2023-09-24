@@ -57,6 +57,7 @@ func (c *comingTableProductRepo) Get(req models.ComingTableProductIdReq) (resp m
 	query := `
 	SELECT 
         cp.id,
+		cp.category_id,
         ct.name,
         cp.name,
         cp.price,
@@ -74,6 +75,7 @@ func (c *comingTableProductRepo) Get(req models.ComingTableProductIdReq) (resp m
 	var comingTableProduct models.ComingTableProductResp
 	if err = c.db.QueryRow(context.Background(), query, req.Id).Scan(
 		&comingTableProduct.Id,
+		&comingTableProduct.CategoryId,
 		&comingTableProduct.CategoryName,
 		&comingTableProduct.Name,
 		&comingTableProduct.Price,
@@ -102,6 +104,7 @@ func (c *comingTableProductRepo) GetList(req models.GetListComingTableProductReq
 	s := `
 	SELECT 
 		cp.id,
+		cp.category_id,
 		ct.name,
 		cp.name,
 		cp.price,
@@ -116,6 +119,9 @@ func (c *comingTableProductRepo) GetList(req models.GetListComingTableProductReq
 
 	if req.CategoryId != "" {
 		filter += ` AND cp.category_id='` + req.CategoryId + "' "
+	}
+	if req.ComingTableId != "" {
+		filter += ` AND cp.coming_table_id='` + req.ComingTableId + "' "
 	}
 	if req.Barcode != "" {
 		filter += ` AND cp.barcode='` + req.Barcode + "' "
@@ -146,6 +152,7 @@ func (c *comingTableProductRepo) GetList(req models.GetListComingTableProductReq
 		var comingTableProduct models.ComingTableProductResp
 		err := rows.Scan(
 			&comingTableProduct.Id,
+			&comingTableProduct.CategoryId,
 			&comingTableProduct.CategoryName,
 			&comingTableProduct.Name,
 			&comingTableProduct.Price,

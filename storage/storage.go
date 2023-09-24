@@ -33,7 +33,6 @@ type ProductsI interface {
 	GetList(req models.GetListProductReq) (resp models.GetListProductResp, err error)
 	Update(req models.Product) (string, error)
 	Delete(req models.ProductIdReq) (string, error)
-	GetCategoryId(barcode string) (resp string, err error)
 }
 
 type ComingTablesI interface {
@@ -58,4 +57,5 @@ type RemainingsI interface {
 	GetList(req models.GetListRemainingReq) (resp models.GetListRemainingResp, err error)
 	Update(req models.Remaining) (string, error)
 	Delete(req models.RemainingIdReq) (string, error)
+	CheckProductExists(barcode string) (resp bool)
 }
