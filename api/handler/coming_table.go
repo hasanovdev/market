@@ -182,20 +182,20 @@ func (h *Handler) DeleteComingTable(c *gin.Context) {
 }
 
 // ScanBarcode godoc
-// @Router       /coming_tables/scan-barcode/{id} [get]
+// @Router       /coming_tables/scan-barcode/{coming_table_id} [get]
 // @Summary      Scan barcode product
 // @Description  Scan barcode and create or update coming table products
 // @Tags         coming_tables
 // @Accept       json
 // @Produce      json
-// @Param        id   path    string     true    "Coming table ID to retrieve"
+// @Param        coming_table_id   path    string     true    "Coming table ID to retrieve"
 // @Param        barcode   query    string     true    "Product barcode to retrieve"
 // @Success      200  {string}  string
 // @Failure      400  {object}  http.ErrorResp
 // @Failure      404  {object}  http.ErrorResp
 // @Failure      500  {object}  http.ErrorResp
 func (h *Handler) ScanBarcode(c *gin.Context) {
-	comingTableId := c.Param("id")
+	comingTableId := c.Param("coming_table_id")
 	if !helper.IsValidUUID(comingTableId) {
 		h.log.Error("error ComingTable id:", logger.Error(errors.New("invalid id")))
 		c.JSON(http.StatusBadRequest, "invalid id")
@@ -273,7 +273,7 @@ func (h *Handler) ScanBarcode(c *gin.Context) {
 
 	} else {
 		c.JSON(http.StatusOK, "Coming Table already finished")
-		h.log.Info("coming table already finished")
+		h.log.Warn("coming table already finished")
 		return
 	}
 }

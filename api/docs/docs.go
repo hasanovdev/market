@@ -948,7 +948,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/coming_tables/scan-barcode/{id}": {
+        "/coming_tables/scan-barcode/{coming_table_id}": {
             "get": {
                 "description": "Scan barcode and create or update coming table products",
                 "consumes": [
@@ -965,7 +965,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Coming table ID to retrieve",
-                        "name": "id",
+                        "name": "coming_table_id",
                         "in": "path",
                         "required": true
                     },

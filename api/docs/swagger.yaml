@@ -969,7 +969,7 @@ paths:
       summary: Update an existing coming_table
       tags:
       - coming_tables
-  /coming_tables/scan-barcode/{id}:
+  /coming_tables/scan-barcode/{coming_table_id}:
     get:
       consumes:
       - application/json
@@ -977,7 +977,7 @@ paths:
       parameters:
       - description: Coming table ID to retrieve
         in: path
-        name: id
+        name: coming_table_id
         required: true
         type: string
       - description: Product barcode to retrieve
